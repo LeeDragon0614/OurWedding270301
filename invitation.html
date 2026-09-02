@@ -468,6 +468,44 @@
     font-size:20px;
     color:var(--coral);
   }
+  @keyframes familyFadeIn{
+    from{ opacity:0; transform:scale(0.92); }
+    to{ opacity:1; transform:scale(1); }
+  }
+  .family-row.family-pop{
+    animation:familyFadeIn .4s ease-out;
+  }
+  .family-stage{
+    position:relative;
+  }
+  .heart-burst{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    overflow:visible;
+    z-index:5;
+  }
+  @keyframes heartBurst{
+    0%{
+      opacity:0;
+      transform:translate(-50%,-50%) scale(.2);
+    }
+    22%{
+      opacity:1;
+      transform:translate(-50%,-50%) scale(1.15);
+    }
+    100%{
+      opacity:0;
+      transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.7);
+    }
+  }
+  .heart-particle{
+    position:absolute;
+    top:50%;
+    color:var(--coral);
+    animation:heartBurst 1s cubic-bezier(.2,.8,.3,1) forwards;
+    will-change:transform, opacity;
+  }
 
   .profiles{
     width:100%;
@@ -1450,10 +1488,42 @@
       if(familyHint){
         familyHint.textContent = familyRevealed ? '두근두근, 우리 아이의 미래 모습이에요 👶' : '사진을 탭해 주세요';
       }
+      if(familyRevealed){
+        familyKids.classList.remove('family-pop');
+        void familyKids.offsetWidth;
+        familyKids.classList.add('family-pop');
+        spawnFamilyHearts();
+      }
       if(familySub){
         familySub.style.display = familyRevealed ? 'none' : '';
       }
     });
+  }
+  function spawnFamilyHearts(){
+    if(!familyStage) return;
+    var burst = document.createElement('div');
+    burst.className = 'heart-burst';
+    familyStage.appendChild(burst);
+    var glyphs = ['❤️','💕','💗','💖','💘','💓'];
+    var count = 16;
+    for(var i = 0; i < count; i++){
+      var h = document.createElement('span');
+      h.className = 'heart-particle';
+      h.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+      var angle = Math.random() * Math.PI * 2;
+      var dist = 55 + Math.random() * 90;
+      var dx = Math.cos(angle) * dist;
+      var dy = Math.sin(angle) * dist - 40;
+      h.style.setProperty('--dx', dx + 'px');
+      h.style.setProperty('--dy', dy + 'px');
+      h.style.left = (46 + Math.random() * 8) + '%';
+      h.style.fontSize = (14 + Math.random() * 16) + 'px';
+      h.style.animationDelay = (Math.random() * 0.18) + 's';
+      burst.appendChild(h);
+    }
+    setTimeout(function(){
+      if(burst && burst.parentNode){ burst.parentNode.removeChild(burst); }
+    }, 1200);
   }
   var openProfileBtn = document.querySelector('.openProfile');
   if(openProfileBtn){
