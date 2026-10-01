@@ -19,7 +19,7 @@
 <style>
   :root{
     --ink:#2c2c2c;
-    --sub:#8a8a8a;
+    --sub:#6b6b6b;
     --white:#ffffff;
     --line:#ececec;
     --gold:#cf9f5f;
@@ -119,7 +119,7 @@
 
   .couple-names{
     margin-top:20px;
-    font-size:14.5px;
+    font-size:15.5px;
     letter-spacing:.02em;
     color:var(--ink);
     font-weight:500;
@@ -432,8 +432,8 @@
   /* ---------- message ---------- */
   .message{
     text-align:center;
-    font-size:15.5px;
-    line-height:1.85;
+    font-size:16.5px;
+    line-height:1.9;
     color:var(--sub);
     max-width:280px;
   }
@@ -445,9 +445,34 @@
 
   .tap-hint{
     margin-top:2px;
-    font-size:11.5px;
-    color:#c3c3c3;
+    font-size:12.5px;
+    color:#9a9a9a;
     letter-spacing:.02em;
+  }
+
+  .scroll-indicator{
+    margin-top:16px;
+    padding-top:10px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+    animation:scrollBounce 1.6s ease-in-out infinite;
+  }
+  .scroll-indicator span{
+    font-size:12px;
+    letter-spacing:.08em;
+    color:var(--sub);
+  }
+  .scroll-indicator .chev{
+    width:9px; height:9px;
+    border-right:1.6px solid var(--sub);
+    border-bottom:1.6px solid var(--sub);
+    transform:rotate(-45deg);
+  }
+  @keyframes scrollBounce{
+    0%, 100%{ transform:translateY(0); opacity:.55; }
+    50%{ transform:translateY(6px); opacity:1; }
   }
 
   .scrolldown{
@@ -634,7 +659,8 @@
 
   .p-sub{
     margin-top:8px;
-    font-size:13px;
+    font-size:14.5px;
+    line-height:1.6;
     color:var(--sub);
   }
 
@@ -1166,6 +1192,11 @@
         준비했습니다
       </p>
       <p class="tap-hint">캐릭터를 탭하면 인사말을 볼 수 있어요</p>
+
+      <div class="scroll-indicator" aria-hidden="true">
+        <span>아래로 스크롤해주세요</span>
+        <span class="chev"></span>
+      </div>
 
     </div>
   </section>
